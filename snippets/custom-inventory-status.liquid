@@ -1,0 +1,9 @@
+{%- liquid
+    if product.selected_or_first_available_variant.inventory_management == 'shopify'
+        if product.selected_or_first_available_variant.inventory_quantity == 0
+            echo 'products.custom.out_of_stock' | t
+        elsif product.selected_or_first_available_variant.inventory_quantity <= 5
+            echo 'products.custom.low_stock' | t: count: product.selected_or_first_available_variant.inventory_quantity
+        endif
+    endif
+-%}
