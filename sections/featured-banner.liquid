@@ -1,0 +1,124 @@
+{{ 'section-featured-banner.css' | asset_url | stylesheet_tag }}
+
+<section class="featured-banner {{ section.settings.text_alignment }}">
+  <div class="featured-banner__media-wrapper">
+    {% if section.settings.background_image %}
+      {{
+        section.settings.background_image
+        | image_url: width: 1500
+        | image_tag:
+          sizes: '(max-width: 600px) 100vw, 1000px',
+          widths: '360,720,1080,1500',
+          loading: 'lazy',
+          fetchpriority: 'low',
+          alt: section.settings.headline
+        | escape
+      }}
+    {% else %}
+      {{ 'lifestyle-2' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+
+  <div class="featured-banner__content {% unless section.settings.background_image %}placeholder-image{% endunless %}">
+    {% if section.settings.headline != blank %}
+      <h2 class="headline">{{ section.settings.headline }}</h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+      <p class="subheading">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <a href="{{ section.settings.button_link }}" class="button button--primary">
+        {{- section.settings.button_label -}}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Banner",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "paragraph",
+      "content": "This section is best used with high-resolution horizontal images."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline text",
+      "default": "Your headline here"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading text",
+      "default": "Your subheading here"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "paragraph",
+      "content": "Both 'Button label' and 'Button link' are required for the button to show up."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
